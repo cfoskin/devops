@@ -11,6 +11,8 @@ instance = None
 instance_ip = ''
 key = 'cfoskin_key.pem'
 remote_host = "ec2-user@"
+full_remote_host = ''
+
 
 def choose_task(choice):
  if choice == 1:   launch_new_instance()
@@ -35,7 +37,11 @@ def launch_new_instance():
      #get_instance_info(conn,reservation)
      global instance_ip
      instance_ip = instance.ip_address
+     global full_remote_host
+     full_remote_host = remote_host + instance_ip
+     print(full_remote_host)
      install_nginx()
+     #run_remote_command()
 
 
 def get_instance_info(conn, reservation):
@@ -59,72 +65,62 @@ def shut_down_instance(instance):
 
 
 def install_nginx():
- print('Proceedng with installation of nginx...')
- print('attempting to connect to instance using ssh...')
+ print('Proceedng with installation of nginx using ssh...')
  print('time sleep started while waiting for ssh to start')
- time.sleep(40)
- cmd = " ssh -t -o StrictHostKeyChecking=no -i " + key + " " + remote_host + instance_ip + " 'sudo yum install -y nginx' "
+ time.sleep(60)
+ cmd = " ssh -t -o StrictHostKeyChecking=no -i " + key + " " + full_remote_host + " 'sudo yum install -y nginx' "
  success = bool(0)
  while not success:#keep trying until successful as it was only connecting sometimes.
      (status,output) = subprocess.getstatusoutput(cmd)
-     if not status:
+     if status >0:
+         print(output, 'Error installing nginx')
+     else: 
          print('Output nginx: ', output)
          success = bool(1)
          copy_webserver_script()
-     else: print(output, 'Error installing nginx')#failing here a LOT before it is successful?
-
 
      
 def copy_webserver_script():
- cmd = "scp -o StrictHostKeyChecking=no -i " + key + " check_webserver.py " + remote_host + instance_ip +":."  
+ cmd = "scp -i " + key + " start_webserver.py " + full_remote_host +":."  
  (status,output) = subprocess.getstatusoutput(cmd)
- if not status:
-     print('scp was successful')
-     manage_webserver_script()
- else:
+ if status >0:
      print('output: ',output)
      print ("Error from scp")
+ else:
+     print('scp was successful')
+     manage_webserver_script()
 
 def manage_webserver_script():
- chmod_cmd = "ssh -t -o StrictHostKeyChecking=no -i " + key + " " + remote_host + instance_ip +" 'chmod 700 check_webserver.py'"
+ chmod_cmd = "ssh -t -i " + key + " " + full_remote_host +" 'chmod 700 start_webserver.py'"
  (status,output) = subprocess.getstatusoutput(chmod_cmd)
- if not status:
-     print("status:", status)
-     print("permissions successfully changed on script")
-     install_python()
- else:
+ if status >0:
      print('status: ',status)
      print ("Error changing permissions")
+ else:
+     print("status:", status)
+     print("permissions successfully changed on script")
+     install_python() 
 
 def install_python():
- install_python_cmd = "ssh -t -o StrictHostKeyChecking=no -i " + key + " " + remote_host + instance_ip + " 'sudo yum install -y python34'"
+ install_python_cmd = "ssh -t -i " + key + " " + full_remote_host + " 'sudo yum install -y python34'"
  (status,output) = subprocess.getstatusoutput(install_python_cmd)
- if not status:
-     print('install python status: ',status)
-     print(output + " Python 3 successfully installed...")
-     run_webserver_script()
- else:
+ if status >0:
      print('status: ',status)
      print ("Error installing python")
+ else:
+     print(output + " Python 3 successfully installed...")
+     run_webserver_script()
 
 def run_webserver_script():
- run_script_cmd = "ssh -i " + key + " " + remote_host + instance_ip +" 'python3 check_webserver.py'"
- start_nginx = "ssh -i " + key + " " + remote_host + instance_ip +" 'sudo service -y start nginx'"
+ run_script_cmd = "ssh -t -i " + key + " " + full_remote_host +" python3 start_webserver.py"
  print(run_script_cmd)
  (status,output) = subprocess.getstatusoutput(run_script_cmd)
- if not status:
-     print('run script status: ',status)
-     print(output)
-     if output == 'Nginx Server IS NOT running':
-         (status2,output2) = subprocess.getstatusoutput(start_nginx)
-         if not status2:
-             print(output2)
-         else: 
-             print('Error starting nginx')
- else:
+ if status >0:
      print('status: ',status)
-     print ("Error running script")
-
+     print ("Error running web server script")
+ else:
+     print(output)
+     
 def main(): 
  logger_main()
  launch_new_instance()
