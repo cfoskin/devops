@@ -4,12 +4,12 @@ import subprocess
 import boto
 import boto.ec2
 
-def run_remote_command(remote_host,full_key_name, cmd):
- print('this is in other  class')
+def run_remote_command(remote_host, key, cmd):
  (status,output) = subprocess.getstatusoutput(cmd)
- if not status:
+ if status >0:
      print("status:", status)
-     print("Successful")
+     return bool(0)
  else:
-     print('status: ',status)
-     print ("Error")
+     print("status:", status)
+     print(output)
+     return bool(1)
