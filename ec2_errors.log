@@ -1,0 +1,9 @@
+INFO:root:Date and Time: 10.23.15 17:57 Output: ssh: Could not resolve hostname chmod 700 start_webserver.py: Name or service not known
+Status Code: 255
+
+INFO:root:Date and Time: 10.23.15 18:04 Output: ssh_exchange_identification: read: Connection reset by peer
+Status Code: 255
+
+INFO:root:Date and Time: 10.23.15 18:04 Output: ssh: Could not resolve hostname sudo yum install -y python34: Name or service not known
+Status Code: 255
+

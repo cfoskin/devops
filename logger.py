@@ -3,17 +3,9 @@
 import logging
 import time
 
-def log_to_file(string):
+def log_to_file(output, status):
  current_time = time.strftime("%m.%d.%y %H:%M", time.localtime())
- logging.info('Date and Time: '+ current_time + " " + string +'\n')
+ logging.info('Date and Time: '+ current_time + " Output: " + output + "\nStatus Code: %d" % status + '\n')
 
-def print_to_console(String):
- print(string)
-
-def logger_main(): 
- logging.basicConfig(filename='ec2.log',level=logging.INFO)
-
-#main_menu()
-
-if __name__ == '__main__':
-  logger_main()
+def create_log_file(): 
+ logging.basicConfig(filename='ec2_errors.log',level=logging.INFO)
