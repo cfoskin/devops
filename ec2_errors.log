@@ -7,3 +7,51 @@ Status Code: 255
 INFO:root:Date and Time: 10.23.15 18:04 Output: ssh: Could not resolve hostname sudo yum install -y python34: Name or service not known
 Status Code: 255
 
+INFO:root:Date and Time: 10.29.15 12:04 Output: sssstart_webserver.py: No such file or directory
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 12:04 Output: chmod: cannot access ‘start_webserver.py’: No such file or directory
+Connection to 52.18.194.125 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 12:04 Output: python3: can't open file 'start_webserver.py': [Errno 2] No such file or directory
+Connection to 52.18.194.125 closed.
+Status Code: 2
+
+INFO:root:Date and Time: 10.29.15 12:09 Output: sssstart_webserver.py: No such file or directory
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 12:12 Output: sssstart_webserver.py: No such file or directory
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 12:18 Output: sssstart_webserver.py: No such file or directory
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 12:24 Output: /bin/sh: 1: sshdd: not found
+Status Code: 127
+
+INFO:root:Date and Time: 10.29.15 12:32 Output: /bin/sh: 1: sshdd: not found
+Status Code: 127
+
+INFO:root:Date and Time: 10.29.15 14:56 Output: ssh: connect to host 52.18.178.216 port 22: Connection refused
+Status Code: 255
+
+INFO:root:Date and Time: 10.29.15 15:17 Output: Warning: Permanently added 'ec2-52-30-123-60.eu-west-1.compute.amazonaws.com,52.30.123.60' (ECDSA) to the list of known hosts.
+Permission denied (publickey).
+Status Code: 255
+
+INFO:root:Date and Time: 10.29.15 16:38 Output: ssh: connect to host 52.18.38.150 port 22: Connection refused
+Status Code: 255
+
+INFO:root:Date and Time: 10.29.15 17:23 Output: Nginx server is already running
+Connection to 52.18.187.58 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 17:29 Output: Nginx server is already running
+Connection to 52.19.102.225 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.29.15 17:30 Output: Nginx server is already running
+Connection to 52.19.102.225 closed.
+Status Code: 1
+

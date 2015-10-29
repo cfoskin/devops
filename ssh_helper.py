@@ -1,15 +1,19 @@
 #colum foskin 20062042
 #!/usr/bin/python3
-import subprocess
-from logger import * 
-from termcolor import colored
+#python program to assist with remote ssh commands. 
 
-def run_remote_command(instance, remote_host, key, cmd):
+import subprocess
+from logger import log_to_file 
+from termcolor import colored
+import sys
+
+def run_remote_command(instance, cmd):
  if instance != None:
      (status,output) = subprocess.getstatusoutput(cmd)
      if status >0:
          print("status: %d \n" % status)
          handle_ssh_errors(output, status, cmd)
+         return bool(0)
      else:
          print("status:", status)
          handle_ssh_success(cmd)
@@ -20,20 +24,27 @@ def run_remote_command(instance, remote_host, key, cmd):
 
 def handle_ssh_errors(status, output, cmd):
  if "install -y nginx" in cmd:
-     print('Failure installing nginx \n')
+     print(colored('Failure installing nginx \n Please Check the Command and Restart Program to Try Process Again\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  elif "scp" in cmd:
-     print('Failure copying script using SCP\n')
+     print(colored('Failure copying script using SCP \n Please Check the Command and Restart Program to Try Process Again\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  elif "chmod 700" in cmd:
-     print('Failure changing permissions on webserver script\n')
+     print(colored('Failure changing permissions on webserver script \n Please Check the Command and Restart Program To Try Process Again\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output) 
+     sys.exit(1)
  elif "-y python34" in cmd:
-     print('Failure installing python\n')
+     print(colored('Failure installing python\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  elif "python3 start_webserver.py" in cmd:
-     print("Failure starting webserver\n")
+     print(colored("Failure starting webserver - please try again\n", 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+ else:
+     print('Error')
+
  
 def handle_ssh_success(cmd):
  if "install -y nginx" in cmd:
@@ -44,6 +55,6 @@ def handle_ssh_success(cmd):
      print('permissions changed!\n')
  elif "-y python34" in cmd:
      print('Python 3 installed!\n')
- elif "python3 start_webserver.py" in cmd:
-     print("webserver started!\n")
+ else:
+     print("success")
  

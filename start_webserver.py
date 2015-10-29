@@ -1,10 +1,5 @@
 #!/usr/bin/python3
-
-"""A tiny Python program to check that nginx is running and start it if not.
-Try running this program from the command line like this:
-  python3 start_webserver.py
-"""
-
+#A tiny Python program to check that nginx is running and start it if not.
 import sys
 import subprocess
 
