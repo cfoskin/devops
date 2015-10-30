@@ -55,3 +55,51 @@ INFO:root:Date and Time: 10.29.15 17:30 Output: Nginx server is already running
 Connection to 52.19.102.225 closed.
 Status Code: 1
 
+INFO:root:Date and Time: 10.30.15 11:08 Output: Nginx server is already running
+Connection to 52.31.41.81 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 11:44 Output: Nginx server is already running
+Connection to 52.31.45.153 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 11:50 Output: ssh: connect to host 52.19.211.91 port 22: Connection refused
+Status Code: 255
+
+INFO:root:Date and Time: 10.30.15 12:07 Output: Host key verification failed.
+lost connection
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 12:08 Output: Warning: Permanently added '52.19.161.206' (ECDSA) to the list of known hosts.
+chmod: cannot access ‘start_webserver.py’: No such file or directory
+Connection to 52.19.161.206 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 12:08 Output: bash: python3: command not found
+Connection to 52.19.161.206 closed.
+Status Code: 127
+
+INFO:root:Date and Time: 10.30.15 13:07 Output: Nginx server is already running
+Connection to 52.31.65.109 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 13:22 Output: Nginx server is already running
+Connection to 52.31.24.57 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 13:22 Output: Nginx server is already running
+Connection to 52.31.24.57 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 13:22 Output: Nginx server is already running
+Connection to 52.31.24.57 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 13:22 Output: Nginx server is already running
+Connection to 52.31.24.57 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 13:26 Output: Nginx server is already running
+Connection to 52.30.136.93 closed.
+Status Code: 1
+

@@ -3,6 +3,7 @@
 #this python program allows a user to interact with aws using boto. It allows them to remotely launch 
 #an ec2 instance and then installs nginx and uses scp to copy a script using ssh remote. This can be done 
 #automatically by choosing one option or on a step by step basis if the user chooses to do so.
+
 import subprocess
 import boto
 import boto.ec2
@@ -40,7 +41,7 @@ def connect():
 def launch_new_instance():
  global instance
  if instance != None:
-     print('\n\n Instance Already Launched - Please Choose another option')
+     print('\n\n Instance Already Launched - Please Choose another option or restart program to launch a new instance')
  else:
      global reservation
      reservation = conn.run_instances('ami-69b9941e', key_name = 'cfoskin_key', instance_type = 't2.micro', security_groups = ['witsshrdp'])
@@ -52,6 +53,7 @@ def launch_new_instance():
          print(instance.update())
      else:
          print('Instance Launch Complete - Instance is Running \n')
+         wait_for_ssh_service()
          get_instance_info()
          global instance_ip
          instance_ip = instance.ip_address
@@ -59,8 +61,8 @@ def launch_new_instance():
          instance_dns = instance.public_dns_name
          global full_remote_host
          full_remote_host = remote_host + instance_ip
- if execute_all == 1:
-     execute_all_services()
+         if execute_all == 1:
+             execute_all_services()
 
 #execute all the services if the user has chosen that option
 def execute_all_services():
@@ -72,20 +74,17 @@ def execute_all_services():
 
 #sleep for 90 seconds to allow ssh to start.
 def wait_for_ssh_service():
- print('time sleep started while waiting for ssh to start')
+ print('Time sleep started while waiting for ssh and other services to start\n')
  time.sleep(100)#chose 100 to avoid breaking at demo as it was still hit and miss with 80/90.
- 
+ print('Time sleep finished......\n\n')
+
 
 #install nginx using ssh remote cmd.
 def install_nginx():
- if instance != None:
-     wait_for_ssh_service()
-     print('Proceedng with installation of nginx now using ssh...')
-     cmd = " ssh -t -o StrictHostKeyChecking=no -i " + key + " " + full_remote_host + " 'sudo yum install -y nginx' "
-     while run_remote_command(instance, cmd) == bool(0): #ssh remote function from ssh helper class
-         run_remote_command(instance, cmd)
- else:
-     print('\n You need to launch an instance first! \n')  
+ print('\n Proceedng with installation of nginx now using ssh...\n')
+ cmd = " ssh -t -o StrictHostKeyChecking=no -i " + key + " " + full_remote_host + " 'sudo yum install -y nginx' "
+ while run_remote_command(instance, cmd) == bool(0): #ssh remote function from ssh helper class
+     run_remote_command(instance, cmd)
  
 #copy up the start webserver script using SCP which checks if nginx is running and starts if not.
 def copy_webserver_script():
@@ -122,40 +121,17 @@ def test():
  cmd = " lynx " + instance_dns
  os.system(cmd)
 
-# a menu for the user
-def options():
- choice = None
- while choice != '0':
-     print(colored("  Please Note -- If You are Manually Running The Services Listed -- You Must Execute Sequentially From 2 ===>>> 7   ", 'red',attrs=['reverse', 'blink']))
-     print('=============                 Main Menu              =============')
-     print('==================================================================')
-     print('|  1: launch new instance and execute all services                |')
-     print('|  2: launch new instance only                                    |')
-     print('|  3: Install Nginx                                               |')
-     print('|  4: Copy Nginx webserver script using SCP                       |')
-     print('|  5: Change webserver script permissions                         |')
-     print('|  6: Install Python 3 on instance                                |')
-     print('|  7: Run script to check if Nginx is running and start if not    |')
-     print('|  8: Stop Instance                                               |')
-     print('|  9: Terminate Instance                                          |')
-     print('|  t: Test nginx is running correctly using lynx                                       |')
-     print('|  0: EXIT  \n \n                                                 |')
-     print('==================================================================')
-     choice = input('which task do you want to perform? \n\n ')
-     if choice == '1':launch_new_instance()
-     if choice == '2':   
-         global execute_all 
-         execute_all = 0#setting this variable to 0 here so when launching instance is called - the other funnctions won't be executed.
-         launch_new_instance()
-     if choice == '3': install_nginx()
-     if choice == '4': copy_webserver_script()
-     if choice == '5': make_executable() 
-     if choice == '6': install_python() 
-     if choice == '7': run_webserver_script()
-     if choice == '8': stop_instance()
-     if choice == '9': terminate_instance()
-     if choice == 't': test()
-     if choice == '0': sys.exit(0)    
+#view the nginx acces or error log files
+def nginx_log():
+ chown_cmd = "ssh -t -i " + key + " " + full_remote_host +" sudo chown ec2-user /var/log/nginx/"
+ access_log_cmd = "ssh -t -i " + key + " " + full_remote_host +" cat /var/log/nginx/access.log"
+ run_remote_command(instance, chown_cmd)
+ run_remote_command(instance, access_log_cmd)
+
+#view local ec2 error log file
+def view_error_log():
+ cmd = " cat ec2_errors.log "
+ os.system(cmd)
 
 #stop the instance
 def stop_instance():
@@ -185,6 +161,45 @@ def terminate_instance():
          sys.exit(0)
  else:
      print('\nYou Have No Instances Running! \n\n')  
+
+# a menu for the user
+def options():
+ choice = None
+ while choice != '0':
+     print(colored("\n\n Please Note -- If You are Manually Running The Services Listed -- You Must Execute Sequentially From 2 ===>>> 7   ", 'red',attrs=['reverse', 'blink']))
+     print('=============                 Main Menu              =============')
+     print('==================================================================')
+     print(colored('|  1: launch new instance and execute all services                |', 'green'))
+     print('|  2: launch new instance only                                    |')
+     print('|  3: Install Nginx                                               |')
+     print('|  4: Copy Nginx webserver script using SCP                       |')
+     print('|  5: Change webserver script permissions                         |')
+     print('|  6: Install Python 3 on instance                                |')
+     print('|  7: Run script to check if Nginx is running and start if not    |')
+     print('|  8: Stop Instance                                               |')
+     print('|  9: Terminate Instance                                          |')
+     print(colored('|  t: Test nginx is running correctly using lynx                  |','green'))
+     print(colored('|  l: View  Nginx acces log file                                  |','green'))
+     print(colored('|  e: View local ec2 error log                                    |','green'))
+     print(colored('|  0: EXIT                                                        |', 'red'))
+     print('==================================================================')
+     choice = input('which task do you want to perform? \n\n ')
+     if choice == '1':launch_new_instance()
+     if choice == '2':   
+         global execute_all 
+         execute_all = 0#setting this variable to 0 here so when launching instance is called - the other funnctions won't be executed.
+         launch_new_instance()
+     if choice == '3': install_nginx()
+     if choice == '4': copy_webserver_script()
+     if choice == '5': make_executable() 
+     if choice == '6': install_python() 
+     if choice == '7': run_webserver_script()
+     if choice == '8': stop_instance()
+     if choice == '9': terminate_instance()
+     if choice == 't': test()
+     if choice == 'l': nginx_log()
+     if choice == 'e': view_error_log()
+     if choice == '0': sys.exit(0)    
 
 def main():
  connect()

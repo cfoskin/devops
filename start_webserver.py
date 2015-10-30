@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-#A tiny Python program to check that nginx is running and start it if not.
+#A tiny Python program to check that nginx is running and start it if not, this program was given
+#to us and not written by me.
 import sys
 import subprocess
 
+#check if nginx is running and start if it is not. 
 def startnginx():
     cmd = 'ps -A | grep nginx' 
 
