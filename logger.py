@@ -1,4 +1,4 @@
-#colum foskin 20062042
+#colum foskin 
 #!/usr/bin/python3
 #a python program to create a file to log errors to.
 

@@ -103,3 +103,22 @@ INFO:root:Date and Time: 10.30.15 13:26 Output: Nginx server is already running
 Connection to 52.30.136.93 closed.
 Status Code: 1
 
+INFO:root:Date and Time: 10.30.15 14:52 Output: Warning: Permanently added '52.18.165.145' (ECDSA) to the list of known hosts.
+chmod: cannot access ‘start_webserver.py’: No such file or directory
+Connection to 52.18.165.145 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 14:55 Output: Warning: Permanently added '52.17.147.242' (ECDSA) to the list of known hosts.
+chmod: cannot access ‘start_webserver.py’: No such file or directory
+Connection to 52.17.147.242 closed.
+Status Code: 1
+
+INFO:root:Date and Time: 10.30.15 14:58 Output: bash: python3: command not found
+Connection to 52.31.34.201 closed.
+Status Code: 127
+
+INFO:root:Date and Time: 11.12.15 09:26 Output: Warning: Permanently added '52.31.191.94' (ECDSA) to the list of known hosts.
+chmod: cannot access ‘start_webserver.py’: No such file or directory
+Connection to 52.31.191.94 closed.
+Status Code: 1
+

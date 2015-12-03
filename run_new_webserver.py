@@ -1,4 +1,4 @@
-#colum foskin 20062042
+#colum foskin 
 #!/usr/bin/python3
 #this python program allows a user to interact with aws using boto. It allows them to remotely launch 
 #an ec2 instance and then installs nginx and uses scp to copy a script using ssh remote. This can be done 
@@ -16,7 +16,7 @@ from termcolor import colored
 instance = None
 instance_ip = ''
 instance_dns =''
-key = 'cfoskin_key.pem'
+key = 'your_key.pem'
 remote_host = "ec2-user@"
 full_remote_host = ''
 conn = ''
@@ -44,7 +44,7 @@ def launch_new_instance():
      print('\n\n Instance Already Launched - Please Choose another option or restart program to launch a new instance')
  else:
      global reservation
-     reservation = conn.run_instances('ami-69b9941e', key_name = 'cfoskin_key', instance_type = 't2.micro', security_groups = ['witsshrdp'])
+     reservation = conn.run_instances('ami-69b9941e', key_name = 'your_key', instance_type = 't2.micro', security_groups = ['witsshrdp'])
      instance = reservation.instances[0]
      instance.add_tag('Name','GA_ColumFoskin')
      print('Instance Launching - Please wait for initialization... ')

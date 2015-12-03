@@ -1,4 +1,4 @@
-#colum foskin 20062042
+#colum foskin 
 #!/usr/bin/python3
 #python program to assist with remote ssh commands. 
 
@@ -29,17 +29,21 @@ def handle_ssh_errors(status, output, cmd):
      print(colored('Failure installing nginx \n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
  elif "scp" in cmd:
-     print(colored('Failure copying script using SCP \n Please check you are executing in correct sequence\n Please Check the Command and Restart Program to Try Process Again\n', 'red',attrs=['reverse', 'blink']))
+     print(colored('Failure copying script using SCP \n Please Check the Command and Restart Program to Try Process Again\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  elif "chmod 700" in cmd:
-     print(colored('Failure changing permissions on webserver script \n Please check you are executing in correct sequence \n Please Check the Command and Restart Program To Try Process Again\n', 'red',attrs=['reverse', 'blink']))
+     print(colored('Failure changing permissions on webserver script \n Please Check the Command and Restart Program To Try Process Again\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output) 
+     sys.exit(1)
  elif "-y python34" in cmd:
      print(colored('Failure installing python\n', 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  elif "python3 start_webserver.py" in cmd:
-     print(colored("Failure starting webserver \n Please check you are executing in correct sequence \n Please Check the Command and Restart Program To Try Process Again \n", 'red',attrs=['reverse', 'blink']))
+     print(colored("Failure starting webserver \n Please Check the Command and Restart Program To Try Process Again \n", 'red',attrs=['reverse', 'blink']))
      log_to_file(status, output)
+     sys.exit(1)
  else:
      print('Error')
 
